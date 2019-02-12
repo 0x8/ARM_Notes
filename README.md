@@ -130,15 +130,15 @@ Command Structure:
 <OP>{cond}{S} Rd, Rn
 ```
   
-**Types**:
-  
-`MOV Rd, Rn`
-- move
-- move Rn into Rd
----  
-`MVN Rd, Rn`
-- move NOT
-- Takes the bitwise not of Rn and puts the result into Rd
+> **Types**:
+>   
+> `MOV Rd, Rn`
+> - move
+> - move Rn into Rd
+> ---  
+> `MVN Rd, Rn`
+> - move NOT
+> - Takes the bitwise not of Rn and puts the result into Rd
   
 **Examples**:
 
