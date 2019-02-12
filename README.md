@@ -164,3 +164,65 @@ Command Structure:
 > 
 
 
+### Arithmetic Operations
+
+Command Structure:
+
+```
+<op>{cond}{S} Rd, Rn, Operand2
+```
+
+**Instructions**:
+
+---
+`ADD Rd, Rn, Operand2` - Addition
+- Adds Operand2 to Rn and stores in Rd
+  - e.g. `ADD r1, r0, #45` -> `r1 := r0 + 45`
+---
+`ADC Rd, Rn, Operand2` - Addition with carry
+- Same thing as ADD but with carry this time
+  - `ADC r1, r0, #45` -> `r1 := r0 + 45 + carry`
+---
+`SUB Rd, Rn, Operand2` - Subtraction
+- Subtracts Operand2 from Rn and stores in Rd
+  - e.g. `SUB r0, r1, r4` -> `r0 := r1 - r4`
+---
+`SBC Rd, Rn, Operand2` - Subtract with carry
+- e.g. `SBC r0, r1, r4` -> `r0 := r1 - r4 - NOT(carry)`
+---
+`RSB Rd, Rn, Operand2` - Reverse subtract
+- literally SUB with order switched
+  - e.g. `RSB r0, r1, 45` -> `r0 := 45 - r1`
+    - A typical SUB would have been `r0 := r1 - 45` instead
+---
+`RSC Rd, Rn, Operand2` - Reverse subtract with carry
+  - e.g. `RSC r0, r4, #0xFF` -> `r0 := 0xFF - r4 - NOT(carry)`
+---
+
+> **Additional Notes**:
+> * No built-in division function
+>   * Typically shifts or some compiler function will be used for these
+> * Multiplication works differently, needs own section
+
+
+### Logical Operations
+
+Command Structure:
+
+```
+<op>{cond}{S} Rd, Rn, Operand2
+```
+
+**Instructions**:
+
+---
+`AND Rd, Rn, Operand2` - Logical AND
+- Stores the bitwise AND of Rn and Operand2 in Rd
+  - e.g. `AND r0, r1, #1337` -> `r0 := r1 & 1337`
+    - 1337 is 0x539 (hex)
+---
+`EOR Rd, Rn, Operand2` - Exclusive OR (XOR)
+- Performs a bitwise XOR on Rn and Operand2 storing the result in Rd
+  - e.g. `EOR r1, #42, #0xFFFFFFFF` -> `r1 := 0xFFFFFFFF ^ 42`
+    - `0xFFFFFFFF` represents -1 (2's compliment) so this is `42 ^ -1 = -43`
+---
