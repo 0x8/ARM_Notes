@@ -131,7 +131,7 @@ Command Structure:
 ```
   
 **Types**:
-  
+--- 
 `MOV Rd, Rn`
 - move
 - move Rn into Rd
@@ -139,6 +139,7 @@ Command Structure:
 `MVN Rd, Rn`
 - move NOT
 - Takes the bitwise not of Rn and puts the result into Rd
+---
   
 > **Examples**:
 > 
