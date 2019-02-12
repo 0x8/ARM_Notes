@@ -135,23 +135,23 @@ Command Structure:
 `MOV Rd, Rn`
 - move
 - move Rn into Rd
-  
+---  
 `MVN Rd, Rn`
 - move NOT
 - Takes the bitwise not of Rn and puts the result into Rd
   
-Examples:
+**Examples**:
 
 `MOV r0, #42`
 - A move literal, moves the constant value 42 into register r0
-  
+--- 
 `MOV r2, r3`
 - A register move, moves the CONTENTS of register r3 into register r2
-  
+---
 `MOV r0, r0`
 - A NOP instruction as it puts the contents of register r0 into register r0
   accomplishing nothing.  
-  
+---  
 `MVN r1, r0`
 - A NOT move on registers, moves the bitwise-not of the contents of register r0 into
   register r1
