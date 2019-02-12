@@ -5,6 +5,10 @@
 Information initially from [David Thomas](http://www.davespace.co.uk/arm/introduction-to-arm/).
 If you are looking for an actual walkthrough, check there rather than here. These are literally just notes.
 
+**Alternative Sources**:
+Other sources used include the following (updated as I go):
+[ARM website's development tools manual](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0204j/Cihcdbca.html)
+
 
 ### Basics:
 
@@ -54,7 +58,7 @@ If you are looking for an actual walkthrough, check there rather than here. Thes
 <operation>{cond}{flags} Rd,Rn,Operand2
 ```
 
-*Breakdown of Terms*:
+**Breakdown of Terms**:
     
 * `<operation>`:
   * A three-letter mnemonic (MOV, ADD, etc.)
@@ -116,3 +120,46 @@ If you are looking for an actual walkthrough, check there rather than here. Thes
 > NOTE:
 > CPSR is a register but is shown seperate to illustrate usability
 > by both Barrel Shifter and ALU when setting flags
+
+
+### Movement
+
+Command Structure: 
+  
+```
+<OP>{cond}{S} Rd, Rn
+```
+  
+**Types**:
+  
+`MOV Rd, Rn`
+- move
+- move Rn into Rd
+  
+`MVN Rd, Rn`
+- move NOT
+- Takes the bitwise not of Rn and puts the result into Rd
+  
+Examples:
+
+`MOV r0, #42`
+- A move literal, moves the constant value 42 into register r0
+  
+`MOV r2, r3`
+- A register move, moves the CONTENTS of register r3 into register r2
+  
+`MOV r0, r0`
+- A NOP instruction as it puts the contents of register r0 into register r0
+  accomplishing nothing.  
+  
+`MVN r1, r0`
+- A NOT move on registers, moves the bitwise-not of the contents of register r0 into
+  register r1
+  - e.g. Above we have `MOV r0, #42` where 42 is loaded into r0.
+    - The bitwise-not (compliment), ~42, is -43
+    - 42 = `00101010`, ~42 = `11010101`
+      - Solve for two's compliment: convert 1s to 0s then add 1
+        - `11010101` -> `00101010` -> `00101011` = 43 (scalar) so -43
+
+
+
