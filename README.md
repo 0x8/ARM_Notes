@@ -265,25 +265,37 @@ result in a register, they set the flags based upon the operation. The specific
 ---
 `CMP Rn, Operand2` - Compare
 - Sets flags to result of Rn - Operand2
+- Same as `SUBS` without storing the result
 - e.g. `CMP r0, #42` stores result of `r0 - 42` (compares them)
   - if r0 is bigger, result will be positive, else 42 is bigger
+- **Flags affected:** `N`,`V`,`C`,`Z`
+- **Flags not affected:** None
 ---
 `CMN Rn, Operand2` - Compare Negative
 - Does the same thing as CMP but with the negative of Operand2
+- Same as `ADDS` without storing the result
 - e.g. `CMN r0, #42` -> `r0 - (-42) = r0 + 42`
   - Subtraction of a negative is addition
+- **Flags affected:** `N`, `V`, `C`, `Z`
+- **Flags not affected:** None
 ---
 `TST Rn, Operand2` - Bitwise test
 - Does a bitwise AND between Rn and Operand2 discarding the result but setting flags
-- The `ANDS` command does the same thing as this with the additional functionality of
-  storing the results
+- Same as `ANDS` without storing the result
 - e.g. `TST r0, #250` -> Sets flags for `r0 & 250`
+- Updates the N and Z flags according to the results 
+- The C flag can update during calculation of Operand2
+  - I'm not too sure what this means
+- **Flags affected:** `N`,`Z`, possibly `C`
+- **Flags not affected:** `V`
 ---
 `TEQ Rn, Operand2` - Bitwise equivalence test
 - Sets flags for result of Rn EOR Operand2 (The xor of them)
 - Basically checks that Rn == Operand2
+- Same as `EORS` without storing the result
 - e.g. `TEQ r0, r2` -> stores flags for `r0 XOR r2`
 - result is zero if values are equal.
 - does not affect the `V` or `C` flags (`CMP` does)
   - Updates the `N` and `Z` flags
-
+- **Flags affected:** `N`, `Z`
+- **Flags not affected:** `V`, `C`
