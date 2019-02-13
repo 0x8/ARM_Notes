@@ -9,7 +9,7 @@ If you are looking for an actual walkthrough, check there rather than here. Thes
 Other sources used include the following (updated as I go):
 - [ARM website's development tools manual](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0204j/Cihcdbca.html)
 - [ARM Assembler User Guide on keil.com](http://www.keil.com/support/man/docs/armasm/armasm_dom1361289913099.htm)
-
+- [ARM Community forums on Condition Codes](https://community.arm.com/processors/b/blog/posts/condition-codes-1-condition-flags-and-codes)
 
 ### Basics:
 
