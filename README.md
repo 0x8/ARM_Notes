@@ -239,7 +239,7 @@ Command Structure:
 - e.g. `BIC r1, r4, 10` -> `r1 := r4 & (~10)`
 ---
 
-> NOTE:
+> NOTE:  
 > I am unsure how ARM aligns constants so its hard for me to tell how
 > many of these logical operations will actually work. For example, if
 > you ask Python 2 what ~10 is, it will tell you -11 because it aligns
