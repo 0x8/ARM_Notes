@@ -7,7 +7,8 @@ If you are looking for an actual walkthrough, check there rather than here. Thes
 
 **Alternative Sources**:
 Other sources used include the following (updated as I go):
-[ARM website's development tools manual](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0204j/Cihcdbca.html)
+- [ARM website's development tools manual](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0204j/Cihcdbca.html)
+- [ARM Assembler User Guide on keil.com](http://www.keil.com/support/man/docs/armasm/armasm_dom1361289913099.htm)
 
 
 ### Basics:
@@ -177,26 +178,26 @@ Command Structure:
 ---
 `ADD Rd, Rn, Operand2` - Addition
 - Adds Operand2 to Rn and stores in Rd
-  - e.g. `ADD r1, r0, #45` -> `r1 := r0 + 45`
+- e.g. `ADD r1, r0, #45` -> `r1 := r0 + 45`
 ---
 `ADC Rd, Rn, Operand2` - Addition with carry
 - Same thing as ADD but with carry this time
-  - `ADC r1, r0, #45` -> `r1 := r0 + 45 + carry`
+- e.g. `ADC r1, r0, #45` -> `r1 := r0 + 45 + carry`
 ---
 `SUB Rd, Rn, Operand2` - Subtraction
 - Subtracts Operand2 from Rn and stores in Rd
-  - e.g. `SUB r0, r1, r4` -> `r0 := r1 - r4`
+- e.g. `SUB r0, r1, r4` -> `r0 := r1 - r4`
 ---
 `SBC Rd, Rn, Operand2` - Subtract with carry
 - e.g. `SBC r0, r1, r4` -> `r0 := r1 - r4 - NOT(carry)`
 ---
 `RSB Rd, Rn, Operand2` - Reverse subtract
 - literally SUB with order switched
-  - e.g. `RSB r0, r1, 45` -> `r0 := 45 - r1`
-    - A typical SUB would have been `r0 := r1 - 45` instead
+- e.g. `RSB r0, r1, 45` -> `r0 := 45 - r1`
+  - A typical SUB would have been `r0 := r1 - 45` instead
 ---
 `RSC Rd, Rn, Operand2` - Reverse subtract with carry
-  - e.g. `RSC r0, r4, #0xFF` -> `r0 := 0xFF - r4 - NOT(carry)`
+- e.g. `RSC r0, r4, #0xFF` -> `r0 := 0xFF - r4 - NOT(carry)`
 ---
 
 > **Additional Notes**:
@@ -218,11 +219,71 @@ Command Structure:
 ---
 `AND Rd, Rn, Operand2` - Logical AND
 - Stores the bitwise AND of Rn and Operand2 in Rd
-  - e.g. `AND r0, r1, #1337` -> `r0 := r1 & 1337`
-    - 1337 is 0x539 (hex)
+- e.g. `AND r0, r1, #1337` -> `r0 := r1 & 1337`
+  - 1337 is 0x539 (hex)
+  - Also note this is likely a bad example. In Thumb immediates (constants)
+    only go up to 255.
 ---
 `EOR Rd, Rn, Operand2` - Exclusive OR (XOR)
 - Performs a bitwise XOR on Rn and Operand2 storing the result in Rd
-  - e.g. `EOR r1, #42, #0xFFFFFFFF` -> `r1 := 0xFFFFFFFF ^ 42`
-    - `0xFFFFFFFF` represents -1 (2's compliment) so this is `42 ^ -1 = -43`
+- e.g. `EOR r1, #42, #0xFFFFFFFF` -> `r1 := 0xFFFFFFFF ^ 42`
+  - `0xFFFFFFFF` represents -1 (2's compliment) so this is `42 ^ -1 = -43`
 ---
+`ORR Rd, Rn, Operand2` - Logical OR
+- Store the bitwise OR of Rn and Operand2 into Rd
+- e.g. `ORR r8, r4, r6` -> `r8 := r4 || r6`
+- e.g. 2: `ORR r7, #6, #88` -> ` r7 := 6 || 88 = 94`
+---
+`BIC Rd, Rn, Operand2` - Bitwise Clear
+- Stores result of Rn AND NOT Operand2 into Rd
+- e.g. `BIC r1, r4, 10` -> `r1 := r4 & (~10)`
+---
+
+> NOTE:
+> I am unsure how ARM aligns constants so its hard for me to tell how
+> many of these logical operations will actually work. For example, if
+> you ask Python 2 what ~10 is, it will tell you -11 because it aligns
+> it to a full byte (e.g. `10` = `0000 1010`) so when inverting it gets
+> `10 = 0000 1010, ~10 = 1111 0101` which in accounting for two's compliment
+> is `- 0000 1010 + 01 = - 0000 1011 = - 11`. If on the other hand you do
+> _not_ byte-align the value, the result is instead `5` (`1010` -> `0101`).
+
+
+### Comparisons
+
+Command Structure:
+
+```
+<op>{cond} Rn, Operand2
+```
+
+Comparison instructions perform operations but instead of storing the operation
+result in a register, they set the flags based upon the operation. The specific
+
+**Instructions**:
+
+---
+`CMP Rn, Operand2` - Compare
+- Sets flags to result of Rn - Operand2
+- e.g. `CMP r0, #42` stores result of `r0 - 42` (compares them)
+  - if r0 is bigger, result will be positive, else 42 is bigger
+---
+`CMN Rn, Operand2` - Compare Negative
+- Does the same thing as CMP but with the negative of Operand2
+- e.g. `CMN r0, #42` -> `r0 - (-42) = r0 + 42`
+  - Subtraction of a negative is addition
+---
+`TST Rn, Operand2` - Bitwise test
+- Does a bitwise AND between Rn and Operand2 discarding the result but setting flags
+- The `ANDS` command does the same thing as this with the additional functionality of
+  storing the results
+- e.g. `TST r0, #250` -> Sets flags for `r0 & 250`
+---
+`TEQ Rn, Operand2` - Bitwise equivalence test
+- Sets flags for result of Rn EOR Operand2 (The xor of them)
+- Basically checks that Rn == Operand2
+- e.g. `TEQ r0, r2` -> stores flags for `r0 XOR r2`
+- result is zero if values are equal.
+- does not affect the `V` or `C` flags (`CMP` does)
+  - Updates the `N` and `Z` flags
+
