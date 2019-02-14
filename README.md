@@ -131,30 +131,29 @@ Command Structure:
 <OP>{cond}{S} Rd, Rn
 ```
   
-**Types**:
+**Instructions**:
+
 --- 
-`MOV Rd, Rn`
-- move
+**`MOV Rd, Rn` - move**
 - move Rn into Rd
 ---  
-`MVN Rd, Rn`
-- move NOT
+**`MVN Rd, Rn` - Move NOT**
 - Takes the bitwise not of Rn and puts the result into Rd
 ---
   
 > **Examples**:
 > 
-> `MOV r0, #42`
+> **`MOV r0, #42`**
 > - A move literal, moves the constant value 42 into register r0
 > --- 
-> `MOV r2, r3`
+> **`MOV r2, r3`**
 > - A register move, moves the CONTENTS of register r3 into register r2
 > ---
-> `MOV r0, r0`
+> **`MOV r0, r0`**
 > - A NOP instruction as it puts the contents of register r0 into register r0
 >   accomplishing nothing.  
 > ---  
-> `MVN r1, r0`
+> **`MVN r1, r0`**
 > - A NOT move on registers, moves the bitwise-not of the contents of register r0 into
 >   register r1
 >   - e.g. Above we have `MOV r0, #42` where 42 is loaded into r0.
@@ -176,27 +175,27 @@ Command Structure:
 **Instructions**:
 
 ---
-`ADD Rd, Rn, Operand2` - Addition
+**`ADD Rd, Rn, Operand2` - Addition**
 - Adds Operand2 to Rn and stores in Rd
 - e.g. `ADD r1, r0, #45` -> `r1 := r0 + 45`
 ---
-`ADC Rd, Rn, Operand2` - Addition with carry
+**`ADC Rd, Rn, Operand2` - Addition with carry**
 - Same thing as ADD but with carry this time
 - e.g. `ADC r1, r0, #45` -> `r1 := r0 + 45 + carry`
 ---
-`SUB Rd, Rn, Operand2` - Subtraction
+**`SUB Rd, Rn, Operand2` - Subtraction**
 - Subtracts Operand2 from Rn and stores in Rd
 - e.g. `SUB r0, r1, r4` -> `r0 := r1 - r4`
 ---
-`SBC Rd, Rn, Operand2` - Subtract with carry
+**`SBC Rd, Rn, Operand2` - Subtract with carry**
 - e.g. `SBC r0, r1, r4` -> `r0 := r1 - r4 - NOT(carry)`
 ---
-`RSB Rd, Rn, Operand2` - Reverse subtract
+**`RSB Rd, Rn, Operand2` - Reverse subtract**
 - literally SUB with order switched
 - e.g. `RSB r0, r1, 45` -> `r0 := 45 - r1`
   - A typical SUB would have been `r0 := r1 - 45` instead
 ---
-`RSC Rd, Rn, Operand2` - Reverse subtract with carry
+**`RSC Rd, Rn, Operand2` - Reverse subtract with carry**
 - e.g. `RSC r0, r4, #0xFF` -> `r0 := 0xFF - r4 - NOT(carry)`
 ---
 
@@ -217,29 +216,29 @@ Command Structure:
 **Instructions**:
 
 ---
-`AND Rd, Rn, Operand2` - Logical AND
+**`AND Rd, Rn, Operand2` - Logical AND**
 - Stores the bitwise AND of Rn and Operand2 in Rd
 - e.g. `AND r0, r1, #1337` -> `r0 := r1 & 1337`
   - 1337 is 0x539 (hex)
   - Also note this is likely a bad example. In Thumb immediates (constants)
     only go up to 255.
 ---
-`EOR Rd, Rn, Operand2` - Exclusive OR (XOR)
+**`EOR Rd, Rn, Operand2` - Exclusive OR (XOR)**
 - Performs a bitwise XOR on Rn and Operand2 storing the result in Rd
 - e.g. `EOR r1, #42, #0xFFFFFFFF` -> `r1 := 0xFFFFFFFF ^ 42`
   - `0xFFFFFFFF` represents -1 (2's compliment) so this is `42 ^ -1 = -43`
 ---
-`ORR Rd, Rn, Operand2` - Logical OR
+**`ORR Rd, Rn, Operand2` - Logical OR**
 - Store the bitwise OR of Rn and Operand2 into Rd
 - e.g. `ORR r8, r4, r6` -> `r8 := r4 || r6`
 - e.g. 2: `ORR r7, #6, #88` -> ` r7 := 6 || 88 = 94`
 ---
-`BIC Rd, Rn, Operand2` - Bitwise Clear
+**`BIC Rd, Rn, Operand2` - Bitwise Clear**
 - Stores result of Rn AND NOT Operand2 into Rd
 - e.g. `BIC r1, r4, 10` -> `r1 := r4 & (~10)`
 ---
 
-> NOTE:  
+> **NOTE:**    
 > I am unsure how ARM aligns constants so its hard for me to tell how
 > many of these logical operations will actually work. For example, if
 > you ask Python 2 what ~10 is, it will tell you -11 because it aligns
@@ -263,7 +262,7 @@ result in a register, they set the flags based upon the operation. The specific
 **Instructions**:
 
 ---
-`CMP Rn, Operand2` - Compare
+**`CMP Rn, Operand2` - Compare**
 - Sets flags to result of Rn - Operand2
 - Same as `SUBS` without storing the result
 - e.g. `CMP r0, #42` stores result of `r0 - 42` (compares them)
@@ -271,7 +270,7 @@ result in a register, they set the flags based upon the operation. The specific
 > **Flags affected:** `N`,`V`,`C`,`Z`  
 > **Flags not affected:** None  
 ---
-`CMN Rn, Operand2` - Compare Negative
+**`CMN Rn, Operand2` - Compare Negative**
 - Does the same thing as CMP but with the negative of Operand2
 - Same as `ADDS` without storing the result
 - e.g. `CMN r0, #42` -> `r0 - (-42) = r0 + 42`
@@ -279,17 +278,19 @@ result in a register, they set the flags based upon the operation. The specific
 > **Flags affected:** `N`, `V`, `C`, `Z`  
 > **Flags not affected:** None  
 ---
-`TST Rn, Operand2` - Bitwise test
+**`TST Rn, Operand2` - Bitwise test**
 - Does a bitwise AND between Rn and Operand2 discarding the result but setting flags
 - Same as `ANDS` without storing the result
 - e.g. `TST r0, #250` -> Sets flags for `r0 & 250`
 - Updates the N and Z flags according to the results 
 - The C flag can update during calculation of Operand2
   - I'm not too sure what this means
+- `TST` is useful for checking against bitmasks, this is what makes it different
+  from `TEQ`. Using AND, TST determines if specific bits are set.
 > **Flags affected:** `N`,`Z`, possibly `C`  
 > **Flags not affected:** `V`  
 ---
-`TEQ Rn, Operand2` - Bitwise equivalence test
+**`TEQ Rn, Operand2` - Bitwise equivalence test**
 - Sets flags for result of Rn EOR Operand2 (The xor of them)
 - Basically checks that Rn == Operand2
 - Same as `EORS` without storing the result
@@ -299,3 +300,120 @@ result in a register, they set the flags based upon the operation. The specific
   - Updates the `N` and `Z` flags
 > **Flags affected:** `N`, `Z`  
 > **Flags not affected:** `V`, `C`  
+---
+
+## About the Barrel Shifter
+
+The barrel shifter works on Operand2 and can provide up to 5 types of shifts
+and rotations.
+
+**Shifts Provided by Barrel Shifter**:
+
+---
+**`LSL` - Logical Shift Left**
+- Equivalent to << in C and other high level languages
+- Shifts the bits left
+- e.g. Given `0000 0000 0000 0000 0000 0000 0000 1111 << 4` (LSL 4)
+  - Result shifts everything to the left by 4 so we get:
+    `0000 0000 0000 0000 0000 0000 1111 0000`
+    - Note the group of ones shifted to the left by 4. The space is filled
+      with zeros
+- This is the same as an unsigned multiplication by a power of 2
+  - In the above example the shift by 4 is actually multiplication by 2^4 (16)
+---
+**`LSR` - Logical Shift Right**
+- Equivalent of >> in C and other high level languages
+- Shifts the bits right
+- e.g. Given `0000 0000 0000 0000 0000 0000 1111 0000 >> 4` (LSR 4)
+  - Result shifts everything to the right by 4 (left filling with zeros)
+    so we get `0000 0000 0000 0000 0000 0000 0000 1111`
+- This is the same as unsigned division by a power of 2
+  - The above example just divides the original value by 2^4 (16)
+---
+**`ASR` - Arithmetic Shift Right**
+- This is similar to a Logical Shift Right except that it preserves the sign
+  - `LSR` fills with `0`'s from the left, this keeps the sign
+- e.g. Consider the value `1000 0000 0000 0000 0000 0000 0000 0000`
+  shifted 3 with `ASR`
+  - The result would be `1111 0000 0000 0000 0000 0000 0000 0000`
+    - Notice the leftmost nibble changed from `1000` to `1111`
+      - This is because the shift right fills with the same sign
+        bit, 1's in this case.
+- e.g. Using a positive byte as an example: `0100 0000` A>> 3
+  would instead be `0000 1000`. 
+  - It fills with 0s because it is positive.
+- This is a signed division by a power of 2
+---
+**`ROR` - Rotate Right**
+- Like a `LSR` but instead of the bits just "disappearing" off of the
+  rightmost end, they rotate to the other end.
+- e.g. Using just a byte, `0000 1010` rotated by 3 will become
+  `0100 0001`
+  - Note the `010` wrapped around to the leftmost bits.
+---
+**`RRX` - Rotate Right Extended**
+- Rotate with wrap-around through carry bit
+- Instead of strictly wrapping around it uses the previous carry bit
+- e.g. `C 1000 0000 0000 0000 0000 0000 0000 00001` has an original carry bit C
+  - When `RRX` is performed, the old C is placed onto the leftmost bit and then the
+    rightmost bit that is "shifted off" is placed into the carry bit C.
+  - Becomes `1 C100 0000 0000 0000 0000 0000 0000 0000` with `RRX`
+    - Would be `1100 0000 0000 0000 0000 0000 0000 0000` if using `LSR`
+    - C could be 1 or 0, unknown at start?
+---
+
+> **Further Notes:**  
+> Right shifting of negative signed quantities is impementation defined behavior in C
+> meaning the compiler chooses whether it will use `LSR` or `ASR`. Most typically the
+> compiler will use `ASR` but it is important to note that this is **not guaranteed**.
+>  
+> Furthurmore, a handful of instructions such as `MUL`, `CLZ`, and `QADD` cannot use
+> the barrelshifter. More on this probably where they are mentioned.
+
+
+## Operand2
+
+Operand2 can take three different forms:
+
+- **immediate value**
+  - 8-bit
+  - rotated right by even number of places
+- **register shifted by value**
+  - 5-bit, unsigned integer shift
+- **register shifted by register**
+  - Uses the bottom 8-bits of a register
+
+> **Examples:**  
+>   
+> **`MOV r0, #42`**  
+> - Moves the value 42 into r0
+> ---
+> **`MOV r3, r2, LSR #1`**  
+> - Shifts `r2` by one bit then stores in `r3`
+> ---
+> **`RSB r10, r5, r14, ASR #14`**  
+> - Shift value of `r14` right by `14` then subtract value of `r5` from it
+>   - Shift uses sign extension
+>   - stores result in `r10`
+> ---
+> **`SUB r11, r1, r3, ROR r5`**
+> - Rotate `r3` right by the value of `r5`
+> - Subtract `r3` from `r1` then store result in `r11`
+
+
+## Immediates
+
+Immediates in ARM have restrictions on their formation and storage.
+- 32-bit values can't fit into 32-bit instruction word
+- ARM data processing instructions have 12 bits for values in instruction word
+  - Comprised of 4-bit rotation value, and 8-bit immediate value
+    - the 4-bit rotation value is multiplied by 2 so we can only shift by even
+      values in the range 0:30 (0, 2, 4, 6, 8, ... 30)
+    - Immediate value has range 0:255
+  - Assembler converts big values to rotated form, impossible values cause error
+  - Assembler sometimes use `MVN` to form bitwise compliment instead of using `MOV`
+    - e.g. `MOV r0, #FFFFFFFF` == `MVN r0, #0`
+
+
+
+
