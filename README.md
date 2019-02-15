@@ -414,6 +414,21 @@ Immediates in ARM have restrictions on their formation and storage.
   - Assembler sometimes use `MVN` to form bitwise compliment instead of using `MOV`
     - e.g. `MOV r0, #FFFFFFFF` == `MVN r0, #0`
 
+> **Note:**  
+> Due to the way the immediate values work, constants can only be at even offsets
+> from bits 0 or 31. The representable values are only representable as 2-bit shifts
+> from the starting point at bits 0:7. If the desired output would require coverage
+> from say bit 0 and then bits 31, 30, 29, 28, 27, 26, and 25 then the number is not
+> ARM-friendly and would require multiple operations to represent (i.e. it is not a
+> supported immediate value and must be constructed via registers).
 
+> **Example of bad immediate value:**
+> Take the example bit string `1101 1010 0000 0000 0000 0000 0000 0001`. The starting 8-bits
+> would be `0000 0000 0000 0000 0000 0000 1011 0111`. Under ARMs scheme, there is no rotation
+> bits that can be used to change our starting number to the finishing number. In this instance
+> the immediate value that ARM cannot make is 0xda000001 and the starting number in this case
+> was `0x000000b7` which is perfectly valid within one byte
 
+> **Valid bit positions:**
+> ![Look up ARM rotation chart](https://alisdair.mcdiarmid.org/arm-immediate-value-encoding/images/rotations.svg)
 
