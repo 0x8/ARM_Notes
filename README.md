@@ -436,3 +436,39 @@ Immediates in ARM have restrictions on their formation and storage.
 > **Valid bit positions:**  
 > ![Look up ARM rotation chart](https://alisdair.mcdiarmid.org/arm-immediate-value-encoding/images/rotations.svg)
 
+
+## Understanding the Conditional Flags:
+
+The flags set and used in conditions within arms are status flags. These flags are stored in
+bits of the `APSR` (ARMv7 version of `CPSR`, same thing). Usually these flags are set via
+comparison instructions (`CMP`, `TST`, etc.) however **most** arithmetic and logic instructions
+can be altered to their `<op>S` form to update the flags themselves (e.g. `SUBS` vs `SUB`).
+The flags indicate properties such as result sign and can be combined to determine relationships
+such as greater-than, less-than, etc.
+
+**Flags:**
+
+---
+**`N` : Negative**  
+The N flag specifies whether the result of an instruction is negative
+- in practices it is the two's compliment sign bit of the result (bit 31)
+---
+**`Z` : Zero**  
+The zero bit is set when the result of the flag setting instruction is zero
+- e.g. `SUBS r0, r1, r1` will set the `Z` flag because r1 - r1 = 0.
+---
+**`C` : Carry (Unsigned Overflow)**  
+The carry bit is set if an unsigned operation overflows the 32-bit result register.
+- Can be used to implement 64-bit unsigned arithmetic
+---
+**`V` : Signed Overflow**  
+The `V` flag works like `C` but with signed operations.
+- e.g. `0x7fffffff` + `0x7fffffff` = `0xfffffffe` results in setting `V` but not `C`.
+  - This is because `0x7fffffff` is the largest two's compliment representable positive value
+    - By doubling it, the result if unsigned would be correct but signed it is a negative
+      as a result of adding two positives.
+---
+
+
+
+
