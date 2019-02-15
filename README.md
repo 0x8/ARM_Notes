@@ -120,7 +120,11 @@ Other sources used include the following (updated as I go):
 
 > NOTE:
 > CPSR is a register but is shown seperate to illustrate usability
-> by both Barrel Shifter and ALU when setting flags
+> by both Barrel Shifter and ALU when setting flags. Also note that
+> in ARMv7 terminology, CPSR is called APSR instead.
+>
+> **`CPSR`** : **C**urrent **P**rocessor **S**tatus **R**egister
+> **`APSR`** : **A**plication **P**rocessor **S**tatus **R**egister
 
 
 ### Movement
