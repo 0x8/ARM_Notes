@@ -11,7 +11,8 @@ Other sources used include the following (updated as I go):
 - [ARM Assembler User Guide on keil.com](http://www.keil.com/support/man/docs/armasm/armasm_dom1361289913099.htm)
 - [ARM Community forums on Condition Codes](https://community.arm.com/processors/b/blog/posts/condition-codes-1-condition-flags-and-codes)
 
-### Basics:
+
+## Basics:
 
 * ARM has 16 registers
   * each 32 bits wide
@@ -30,7 +31,7 @@ Other sources used include the following (updated as I go):
     * No direct memory value operations
 
 
-### Multi-Mode Arch:
+## Multi-Mode Arch:
 * Two main modes: ARM and Thumb
 
 * ARM Mode:
@@ -53,7 +54,7 @@ Other sources used include the following (updated as I go):
       * Where X is a PC bit but Z is undefined
 
 
-### Instruction Syntax for ARM:
+## Instruction Syntax for ARM:
     
 ```
 <operation>{cond}{flags} Rd,Rn,Operand2
@@ -86,7 +87,7 @@ Other sources used include the following (updated as I go):
 >     * e.g. `<op>{flags}{con} Rd,Rn,Operand2`
 
    
-### Organization:
+## Organization:
 
 * In a three register instruction:
   * `<op> Rd,Rn,Rm`
@@ -127,7 +128,7 @@ Other sources used include the following (updated as I go):
 > **`APSR`** : **A**plication **P**rocessor **S**tatus **R**egister  
 
 
-### Movement
+## Movement
 
 Command Structure: 
   
@@ -168,7 +169,7 @@ Command Structure:
 > 
 
 
-### Arithmetic Operations
+## Arithmetic Operations
 
 Command Structure:
 
@@ -209,7 +210,7 @@ Command Structure:
 > * Multiplication works differently, needs own section
 
 
-### Logical Operations
+## Logical Operations
 
 Command Structure:
 
@@ -252,7 +253,7 @@ Command Structure:
 > _not_ byte-align the value, the result is instead `5` (`1010` -> `0101`).
 
 
-### Comparisons
+## Comparisons
 
 Command Structure:
 
@@ -420,11 +421,35 @@ Immediates in ARM have restrictions on their formation and storage.
 
 > **Note:**  
 > Due to the way the immediate values work, constants can only be at even offsets
-> from bits 0 or 31. The representable values are only representable as 2-bit shifts
+> from bits 0 or 31. The representable values are only representable as 2n-bit shifts
 > from the starting point at bits 0:7. If the desired output would require coverage
 > from say bit 0 and then bits 31, 30, 29, 28, 27, 26, and 25 then the number is not
 > ARM-friendly and would require multiple operations to represent (i.e. it is not a
 > supported immediate value and must be constructed via registers).
+
+> **Note:**  
+> Because of the way ARM handles numbers, code can be optimized by coercing numbers
+> into situations where only ARM-friendly values are used which results in much smaller
+> code in both size and instruction count.
+
+Values that are larger than a single instruction supports can be loaded via a sequence
+of instructions instead.
+
+> **Examples of building non ARM friendly ints:**  
+> ---
+> **To load `0x55555555` into `r2`:**  
+> `MOV r2, #0x55            ; r2 = 0x00000055` - immediate load of 0x55
+> `ORR r2, r2, r2, LSL #8   ; r2 = 0x00005555` - store the value of `(r2 || (r2 << 8))` in `r2`
+> `ORR r2, r2, r2, LSL #16  ; r2 = 0x55555555` - store the value of `(r2 || (r2 << 16))` in `r2`
+> --- 
+> **To try to load the value from memory:**  
+> `LDR r2,  =0x55555555`
+> This tries to form the constant in a single instruction if possible.
+> The explanation of this feature needs work, `LDR Rd,=<constant>` is a pseudo-instruction.
+> ---
+>   
+> **`LDR`** : This is the Load Register command which loads a value into the register like `MOV` does  
+> **`ORR`** : This is the OR Register command that stores the logical OR of two registers in the destination.
 
 > **Example of bad immediate value:**  
 > Take the example bit string `1101 1010 0000 0000 0000 0000 0000 0001`. The starting 8-bits
