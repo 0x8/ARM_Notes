@@ -422,7 +422,7 @@ Immediates in ARM have restrictions on their formation and storage.
 > ARM-friendly and would require multiple operations to represent (i.e. it is not a
 > supported immediate value and must be constructed via registers).
 
-> **Example of bad immediate value:**
+> **Example of bad immediate value:**  
 > Take the example bit string `1101 1010 0000 0000 0000 0000 0000 0001`. The starting 8-bits
 > would be `0000 0000 0000 0000 0000 0000 1011 0111`. Under ARMs scheme, there is no rotation
 > bits that can be used to change our starting number to the finishing number. In this instance
