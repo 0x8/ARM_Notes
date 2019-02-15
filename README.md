@@ -429,6 +429,6 @@ Immediates in ARM have restrictions on their formation and storage.
 > the immediate value that ARM cannot make is 0xda000001 and the starting number in this case
 > was `0x000000b7` which is perfectly valid within one byte
 
-> **Valid bit positions:**
+> **Valid bit positions:**  
 > ![Look up ARM rotation chart](https://alisdair.mcdiarmid.org/arm-immediate-value-encoding/images/rotations.svg)
 
