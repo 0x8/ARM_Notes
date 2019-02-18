@@ -495,5 +495,56 @@ The `V` flag works like `C` but with signed operations.
 ---
 
 
+## The LDR pseudo-operator, `=NUMBER`
+
+Instuctions such as `LDR r0, =0xffffffff` are common. The righthand operand `=0xffffffff`,
+in particular the `=`, is a pseudo-instruction. The purpose of this pseudo instruction is
+to attempt to load constants in one instruction. If the constant after the `=` is "ARM-friendly"
+(that is, fits within the supported range of constants) then it is moved via a `MOV` or `MVN`
+instruction into the specified register. If the constant is _not_ "ARM-friendly" then it is
+put into the literal pool (generated and stored) then loaded via an offset to the program
+counter (a PC-relative `LDR` instruction). This is analogous to `LDR Rd, [PC, #-1234]`
+where `#-1234` represents some offset from `PC`.
+
+
+## Branches
+
+Branch instructions are how ARM controls the flow of execution. Used in conjunction with flags
+they specify conditional behavior such as loops, if-statements, etc..
+
+**Instruction Format:**
+
+```
+<op>{cond} <address>
+```
+
+**Instructions:**
+
+---
+**`B` - Branch**  
+- **`pc`** := address  
+---
+**`BL` - Branch with Link**  
+- **`r14`** := address of next instruction  
+- **`pc`** := `<address>`
+Return from the subroutine invoked by `BL` is done by:  
+`MOV pc, r14`
+or  
+`BX r14 ; (ARMv4T or later)`
+- Essentially the return address is stored in r14 when jumping.
+  - overwrite `r14` == overwrite `EIP`.
+---  
+
+> **labels:**
+> with both branch instructions above labels can be (and usually are) used.
+> and example of this might be calling a subrouting (function) "add" via `BL`
+> like so:
+> 
+> `BL add`
+>
+> This jumps to the subroutine `add`, storing the `pc` in `r14` (or `lr` before it does).
+> Upon reaching the end of the subroutine, the original `pc` is restored by loading `r14`
+> (`lr`) into it.
+
 
 
