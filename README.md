@@ -546,5 +546,17 @@ or
 > Upon reaching the end of the subroutine, the original `pc` is restored by loading `r14`
 > (`lr`) into it.
 
+> **Note:**
+> Branches are pc-relative +/- 32M range
+> - 24 bits x 4 bytes
+> - Produced code is position independent and can execute from any address in memory
+> To use the whole 32 bit adress space `lr` can be manually loaded and then PC can be
+> loaded manually:
+>   
+> ```
+> MOV lr, pc    ; save return address
+> LDR pc, =dest ; load dest address into pc
+> ```
+  
 
 
